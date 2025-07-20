@@ -8,50 +8,44 @@
 <body>
     <?php
         class StrFrequency {
-            public $string;
+            private $string;
 
-            function __construct($s) {
-                $this->string = $s;
+            public function __construct($string) {
+                $this->string = $string;
             }
 
-            function letterFrequencies() {
-                $r = [];
-                $s = strtoupper(preg_replace('/[^a-z]/i', '', $this->string));
-                for ($i = 0; $i < strlen($s); $i++) {
-                    $c = $s[$i];
-                    $r[$c] = isset($r[$c]) ? $r[$c]+1 : 1;
+            public function letterFrequencies() {
+                $letters = str_split(preg_replace('/[^a-z]/i', '', strtoupper($this->string)));
+                $result = [];
+                foreach ($letters as $letter) {
+                    $result[$letter] = ($result[$letter] ?? 0) + 1;
                 }
-                return $r;
+                return $result;
             }
 
-            function wordFrequencies() {
-                $r = [];
-                $words = preg_split('/[^a-z]+/i', strtolower($this->string));
-                foreach ($words as $w) {
-                    if ($w) $r[$w] = isset($r[$w]) ? $r[$w]+1 : 1;
-                }
-                return $r;
+            public function wordFrequencies() {
+                $words = preg_split('/\s+/', preg_replace('/[^a-z\s]/i', '', strtolower($this->string)));
+                return array_count_values($words);
             }
 
-            function reverseString() {
-                $r = [];
-                $words = preg_split('/[^a-z]+/i', strtolower($this->string));
-                foreach ($words as $w) {
-                    if ($w) $r[$w] = isset($r[$w]) ? $r[$w]+1 : 1;
-                }
+            public function reverseString() {
                 return strrev($this->string);
             }
-        }       
-
-
-        $sf = new StrFrequency("Face it, Harley-you and your Puddin' are kaput!");
-        foreach ($sf->letterFrequencies() as $letter => $count) {
-            echo "$letter - $count<br><br>";
         }
-        foreach ($sf->wordFrequencies() as $word => $count) {
-            echo "$word - $count<br><br>";
+
+        $text = new StrFrequency("Face Face it, Harley-- you and your Puddin' are kaput!");
+
+        echo "Letters:<br>";
+        foreach ($text->letterFrequencies() as $letter => $count) {
+            echo "Letter $letter is repeated $count times<br>";
         }
-        echo $sf->reverseString();
+
+        echo "<br>Words:<br>";
+        foreach ($text->wordFrequencies() as $word => $count) {
+            echo "Word $word is repeated $count times<br>";
+        }
+
+        echo "<br>Reverse:<br>" . $text->reverseString() . "<br>";
     ?>
 </body>
 </html>
