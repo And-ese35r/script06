@@ -7,45 +7,156 @@
 </head>
 <body>
     <?php
-        class StrFrequency {
-            private $string;
+        class LLItem {
+            public $data;
+            public $next;
 
-            public function __construct($string) {
-                $this->string = $string;
+            public function __construct($data) {
+                $this->data = $data;
+                $this->next = null;
             }
+        }
+#....................................................................................................................................................................................................
+        class LList implements IteratorAggregate {
+            private $first;
+            private $last;
+            private $count;
 
-            public function letterFrequencies() {
-                $letters = str_split(preg_replace('/[^a-z]/i', '', strtoupper($this->string)));
-                $result = [];
-                foreach ($letters as $letter) {
-                    $result[$letter] = ($result[$letter] ?? 0) + 1;
+            public function __construct() {
+                $this->first = null;
+                $this->last = null;
+                $this->count = 0;
+            }
+#....................................................................................................................................................................................................
+            public function getFirst() {
+                return $this->first->data;
+            }
+#....................................................................................................................................................................................................
+            public function getLast() {
+                return $this->last->data;
+            }
+#....................................................................................................................................................................................................
+            public function add($value) {
+                $newItem = new LLItem($value);
+
+                if ($this->last === null) {
+                    $this->first = $newItem;
+                    $this->last = $newItem;
+                } else {
+                    $this->last->next = $newItem;
+                    $this->last = $newItem;
                 }
-                return $result;
+
+                $this->count++;
             }
-
-            public function wordFrequencies() {
-                $words = preg_split('/\s+/', preg_replace('/[^a-z\s]/i', '', strtolower($this->string)));
-                return array_count_values($words);
+#....................................................................................................................................................................................................
+            public function addArr(array $array) {
+                foreach ($array as $value) {
+                    $this->add($value);
+                }
             }
-
-            public function reverseString() {
-                return strrev($this->string);
+#....................................................................................................................................................................................................
+            public function remove($value) {
+                if ($this->first && $this->first->data === $value) {
+                    $this->first = $this->first->next;
+                    $this->last = $this->first ? $this->last : null;
+                    return $this->count-- > 0;
+                }
+                return false;
             }
+#....................................................................................................................................................................................................
+            public function removeAll(array $values) {
+                $prev = null;
+                $current = $this->first;
+
+                while ($current !== null) {
+                    if (in_array($current->data, $values)) {
+                        if ($prev === null) {
+                            $this->first = $current->next;
+                        } else {
+                            $prev->next = $current->next;
+                        }
+                        $this->count--;
+                    } else {
+                        $prev = $current;
+                    }
+                    $current = $current->next;
+                }
+            }
+#....................................................................................................................................................................................................
+            public function conteins($value) {
+                $current = $this->first;
+                while ($current !== null) {
+                    if ($current->data === $value) {
+                        echo "true";
+                        return;
+                    }
+                    $current = $current->next;
+                }
+                    echo "false";
+            }
+#....................................................................................................................................................................................................
+            public function clear() {
+                $this->first = null;
+                $this->last = null;
+                $this->count = 0;
+            }
+#....................................................................................................................................................................................................
+            public function count() {
+                echo $this->count;
+                return;
+            }
+#....................................................................................................................................................................................................
+            public function getIterator(): \Traversable {
+                $items = [];
+                $current = $this->first;
+                while ($current !== null) {
+                    $items[] = $current->data;
+                    $current = $current->next;
+                }
+                return new \ArrayIterator($items);
+            }
+        
+        
         }
+#....................................................................................................................................................................................................
+        $list = new LList();
 
-        $text = new StrFrequency("Face Face it, Harley-- you and your Puddin' are kaput!");
+        $list->add(10);
+        $list->add(20);
 
-        echo "Letters:<br>";
-        foreach ($text->letterFrequencies() as $letter => $count) {
-            echo "Letter $letter is repeated $count times<br>";
+        $list->addArr([30, 40, 50, 60, 70]);
+
+        echo "All Elements: ";
+        foreach ($list as $item) {
+            echo $item . " , ";
         }
+#....................................................................................................................................................................................................
+        echo "<br>" . "First Element: " . $list->getFirst() . "<br>";
+        echo "Last Element: " . $list->getLast() . "<br>";
 
-        echo "<br>Words:<br>";
-        foreach ($text->wordFrequencies() as $word => $count) {
-            echo "Word $word is repeated $count times<br>";
+        $list->remove(10);
+        $list->removeAll([50, 60, 70]);
+
+        echo "All Elements: ";
+        foreach ($list as $item) {
+            echo $item . " , ";
         }
+        echo "<br>";
+        echo "Elements are: ";
+        $list->count();
+        echo "<br>";
 
-        echo "<br>Reverse:<br>" . $text->reverseString() . "<br>";
+        echo "Is contein element that meaning: ";
+        $list->conteins(20);
+        $list->clear();
+        echo "<br>";
+        
+        echo "All Elements: ";
+        foreach ($list as $item) {
+            echo $item . " , ";
+        }
+#....................................................................................................................................................................................................
     ?>
 </body>
 </html>
