@@ -7,156 +7,137 @@
 </head>
 <body>
     <?php
-        class LLItem {
+        class LLitem {
             public $data;
             public $next;
-
+        
             public function __construct($data) {
-                $this->data = $data;
                 $this->next = null;
+                $this->data = $data;
             }
         }
-#....................................................................................................................................................................................................
-        class LList implements IteratorAggregate {
-            private $first;
-            private $last;
-            private $count;
 
-            public function __construct() {
-                $this->first = null;
-                $this->last = null;
-                $this->count = 0;
-            }
-#....................................................................................................................................................................................................
-            public function getFirst() {
-                return $this->first->data;
-            }
-#....................................................................................................................................................................................................
-            public function getLast() {
-                return $this->last->data;
-            }
-#....................................................................................................................................................................................................
-            public function add($value) {
-                $newItem = new LLItem($value);
+        class LList {
+            public $first = null;
+            public $last = null;
+            public $count = 0;
 
-                if ($this->last === null) {
-                    $this->first = $newItem;
-                    $this->last = $newItem;
-                } else {
-                    $this->last->next = $newItem;
-                    $this->last = $newItem;
-                }
-
-                $this->count++;
-            }
-#....................................................................................................................................................................................................
-            public function addArr(array $array) {
-                foreach ($array as $value) {
-                    $this->add($value);
-                }
-            }
-#....................................................................................................................................................................................................
-            public function remove($value) {
-                if ($this->first && $this->first->data === $value) {
-                    $this->first = $this->first->next;
-                    $this->last = $this->first ? $this->last : null;
-                    return $this->count-- > 0;
-                }
-                return false;
-            }
-#....................................................................................................................................................................................................
-            public function removeAll(array $values) {
-                $prev = null;
+            public function __toString() {
+                $result = [];
                 $current = $this->first;
-
+            
                 while ($current !== null) {
-                    if (in_array($current->data, $values)) {
-                        if ($prev === null) {
-                            $this->first = $current->next;
-                        } else {
-                            $prev->next = $current->next;
-                        }
-                        $this->count--;
-                    } else {
-                        $prev = $current;
-                    }
+                    $result[] = $current->data;
                     $current = $current->next;
                 }
+
+                return implode("    ", $result);
             }
-#....................................................................................................................................................................................................
-            public function conteins($value) {
+        
+            public function add($value) {
+                $item = new LLitem($value);
+                if ($this->first === null && $this->last === null) {
+                    $this->first = $item;
+                    $this->last = $item;
+                }
+                else {
+                    $this->last->next = $item;
+                    $this->last = $item;
+                }
+                $this->count++;
+            }
+
+
+            public function getFirst() {
+                return $this->first !== null ? $this->first->data : null;
+            }
+
+            public function getLast() {
+                return $this->last !== null ? $this->last->data : null;
+            }
+
+            public function addArr(array $value) {
+                foreach ($value as $item) {
+                    $this->add($item);
+                }
+            }
+
+            public function remove($value) {
+                if ($this->first === null) {
+                    return;
+                }
+                
+                if ($this->first->data === $value) {
+                    $this->first = $this->first->next;
+                    $this->count--;
+
+                    if ($this->first === null) {
+                        $this->last = null;
+                    }
+                    return;
+                }
+                
                 $current = $this->first;
-                while ($current !== null) {
-                    if ($current->data === $value) {
-                        echo "true";
+                while ($current->next !== null) {
+                    if ($current->next->data === $value) {
+                        $current->next = $current->next->next;
+                        $this->count--;
+                        
+                        if ($current->next === null) {
+                            $this->last = $current;
+                        }
                         return;
                     }
                     $current = $current->next;
                 }
-                    echo "false";
             }
-#....................................................................................................................................................................................................
-            public function clear() {
-                $this->first = null;
-                $this->last = null;
-                $this->count = 0;
+
+            public function removeAll(array $value) {
+                foreach ($value as $item) {
+                    while ($this->conteins($item)) {
+                        $this->remove($item);
+                    }
+                }
             }
-#....................................................................................................................................................................................................
-            public function count() {
-                echo $this->count;
-                return;
-            }
-#....................................................................................................................................................................................................
-            public function getIterator(): \Traversable {
-                $items = [];
+        
+            public function conteins($value) {
                 $current = $this->first;
                 while ($current !== null) {
-                    $items[] = $current->data;
+                    if ($current->data === $value) {
+                        return true;
+                    }
                     $current = $current->next;
                 }
-                return new \ArrayIterator($items);
+                return false;
             }
-        
-        
+
+            public function clear() {
+                $this->first = null;
+            }
+
+            public function count() {
+                $count = 0;
+                $current = $this->first;
+                while ($current !== null) {
+                    $count++;
+                    $current = $current->next;
+                }
+                echo $count;
+            }
         }
-#....................................................................................................................................................................................................
-        $list = new LList();
 
-        $list->add(10);
-        $list->add(20);
-
-        $list->addArr([30, 40, 50, 60, 70]);
-
-        echo "All Elements: ";
-        foreach ($list as $item) {
-            echo $item . " , ";
-        }
-#....................................................................................................................................................................................................
-        echo "<br>" . "First Element: " . $list->getFirst() . "<br>";
-        echo "Last Element: " . $list->getLast() . "<br>";
-
-        $list->remove(10);
-        $list->removeAll([50, 60, 70]);
-
-        echo "All Elements: ";
-        foreach ($list as $item) {
-            echo $item . " , ";
-        }
-        echo "<br>";
-        echo "Elements are: ";
-        $list->count();
-        echo "<br>";
-
-        echo "Is contein element that meaning: ";
-        $list->conteins(20);
+        $list = new LList;
+        $list->add(2);
+        $list->add(3);
+        $list->add(4);
+        $list->remove(4);
+        $list->removeAll([2, 3]);
         $list->clear();
-        echo "<br>";
-        
-        echo "All Elements: ";
-        foreach ($list as $item) {
-            echo $item . " , ";
-        }
-#....................................................................................................................................................................................................
+        $list->addArr([5, 6, 7]);
+        $list->count();
+        echo $list;
+        echo $list->getFirst();
+        echo $list->getLast();
     ?>
 </body>
 </html>
