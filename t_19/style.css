@@ -1,0 +1,198 @@
+body {
+    height: 100vh;
+    background: #000000;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(166, 0, 0, 1) 50%, rgba(0, 0, 0, 1) 100%);
+    overflow: hidden;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profil {
+    height: 500px;
+    width: 400px;
+    background-color: rgb(200, 200, 200);
+    border: 6px rgb(255, 255, 255) solid;
+    box-shadow:
+      0 0 2px #fff,
+      0 0 4px #ffe8e8,
+      0 0 6px #ffcdcd,
+      0 0 8px #ff8080,
+      0 0 10px #ff5c5c,
+      0 0 12px #ff3333,
+      0 0 14px #ff1b1b,
+      0 0 15px #ff0000;
+    animation: neon-flicker 1.5s ease-in-out infinite alternate;
+    border-radius: 6px;
+}
+
+.candidate {
+    position: relative;
+    bottom: 32px;
+    left: 10px;
+    font-size: 30px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white; /* Основной цвет текста */
+    text-shadow:
+      0 0 2px #fff,
+      0 0 4px #ffe8e8,
+      0 0 6px #ffcdcd,
+      0 0 8px #ff8080,
+      0 0 10px #ff5c5c,
+      0 0 12px #ff3333,
+      0 0 14px #ff1b1b,
+      0 0 15px #ff0000;
+  animation: neon-flicker 1.5s ease-in-out infinite alternate;
+}
+
+.form {
+    height: 500px;
+}
+
+.profil-conteiner {
+    height: 500px;
+    width: 380px;
+    margin: 10px;
+    position: relative;
+    bottom: 40px;
+}
+
+.text, .email, .number {
+    height: 30px;
+    width: 370px;
+    margin: 4px;
+}
+
+.abouth-me {
+    height: 200px;
+    width: 370px;
+    margin: 4px;
+}
+
+.text-info {
+    height: 160px;
+    width: 370px;
+    margin: 4px 0 0 0;
+}
+
+.photo {
+    height: 100px;
+    width: 370px;
+    margin: 4px;
+}
+
+.file {
+    margin: 4px 0 0 0;
+}
+
+.choises {
+    display: flex;
+    position: relative;
+    bottom: 36px;
+}
+
+.button-post, .submit {
+    height: 40px;
+    width: 175px;
+    margin: 5px;
+}
+
+.reset {
+    height: 40px;
+    width: 40px;
+    margin: 5px 0 0 0;
+}
+
+.info-conteiner {
+    height: 300px;
+    width: 400px;
+    background-color: rgb(172, 112, 0);
+    position: relative;
+    top: 100px;
+    left: 10px;
+    display: none;
+    border: 4px #a86700 solid;
+    animation-duration: 0.9s;
+}
+
+.info-profil {
+    height: 290px;
+    width: 390px;
+    margin: 5px;
+    background-color: rgb(255, 255, 255);
+    font-size: 16px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
+    border-radius: 10px;
+    animation-duration: 1s;
+    position: fixed;
+}
+
+@keyframes slideinfirst {
+  from { 
+    width: 0; 
+    opacity: 0.6; 
+    }
+  to { 
+    width: 400px; 
+    opacity: 1; 
+    }
+}
+
+
+@keyframes slideoutfirst {
+  from { 
+    width: 400px; 
+    opacity: 1; 
+    }
+  to { 
+    width: 0; 
+    opacity: 0.6; 
+    display: none;
+    }
+}
+
+@keyframes slideinsecond {
+  from {
+     width: 0; 
+     opacity: 0.6; 
+    }
+  to { 
+    width: 390px; 
+    opacity: 1; 
+    }
+}
+
+
+@keyframes slideoutsecond {
+  from { 
+    width: 390px; 
+    opacity: 1; 
+    }
+  to { 
+    width: 0; 
+    opacity: 0.6; 
+    display: none;
+    }
+}
+
+.slide-in-first {
+    display: block;
+    animation: slideinfirst 0.5s ease-out forwards;
+}
+
+.slide-out-first {
+    display: block;
+    animation: slideoutfirst 0.5s ease-in forwards;
+}
+
+.slide-in-second {
+    display: block;
+    animation: slideinsecond 0.5s ease-out forwards;
+}
+
+.slide-out-second {
+    display: block;
+    animation: slideoutsecond 0.5s ease-in forwards;
+}
