@@ -30,34 +30,23 @@
             }
         }
 
-        class Team {
-            public $id;
+        class Team extends Avenger {
             public $avengers;
 
-            public function __construct($id, $avengers) {
-                $this->id = $id;
+            public function __construct($avengers) {
                 $this->avengers = $avengers;
             }
 
             public function battle($damage) {
-                foreach ($this->avengers as $key => $avenger) {
+                $lost = 0;
+                foreach ($this->avengers as $avenger) {
                     $avenger->hp -= $damage;
                     if ($avenger->hp <= 0) {
-                        unset($this->avengers[$key]);
+                        $lost++;
                     }
                 }
-                $this->avengers = array_values($this->avengers);
-            }
-
-            public function calculate($cloned_team) {
-                $original_count = count($cloned_team->avengers);
-                $current_count = count($this->avengers);
-                $losses = $original_count - $current_count;
-
-                if ($losses == 0) {
-                    echo "We haven't lost anyone in this battle!\n";
-                } else {
-                    echo "In this battle we lost $losses Avengers.\n";
+                if ($lost > 0) {
+                    echo "We lost $lost Avenger.";
                 }
             }
         }
@@ -68,17 +57,9 @@
             new Avenger("Carol Danvers", "Captain Marvel", "female", 27, ["Durability", "Flight", "Interstellar Travel"], 95)
         ];
 
-        $team = new Team(1, $avengers);
-
-        $cloned_team = clone $team;
-
-        $team->battle(150);
-
-        $team->calculate($cloned_team);
-
-        foreach ($team->avengers as $avenger) {
-            echo $avenger;
-        }
+        $team = new Team($avengers);
+        $team->battle(50);
+        $team->battle(25);
     ?>
 </body>
 </html>
