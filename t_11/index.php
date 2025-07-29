@@ -47,7 +47,6 @@
                 $this->count++;
             }
 
-
             public function getFirst() {
                 return $this->first !== null ? $this->first->data : null;
             }
@@ -70,10 +69,6 @@
                 if ($this->first->data === $value) {
                     $this->first = $this->first->next;
                     $this->count--;
-
-                    if ($this->first === null) {
-                        $this->last = null;
-                    }
                     return;
                 }
                 
@@ -94,13 +89,13 @@
 
             public function removeAll(array $value) {
                 foreach ($value as $item) {
-                    while ($this->conteins($item)) {
+                    while ($this->contains($item)) {
                         $this->remove($item);
                     }
                 }
             }
         
-            public function conteins($value) {
+            public function contains($value) {
                 $current = $this->first;
                 while ($current !== null) {
                     if ($current->data === $value) {
@@ -113,16 +108,12 @@
 
             public function clear() {
                 $this->first = null;
+                $this->last = null;
+                $this->count = 0;
             }
 
             public function count() {
-                $count = 0;
-                $current = $this->first;
-                while ($current !== null) {
-                    $count++;
-                    $current = $current->next;
-                }
-                echo $count;
+                return $this->count;
             }
         }
 
@@ -134,9 +125,10 @@
         $list->removeAll([2, 3]);
         $list->clear();
         $list->addArr([5, 6, 7]);
-        $list->count();
-        echo $list;
-        echo $list->getFirst();
+        echo $list->count() . " ";
+        echo $list->contains(7) . " ";
+        echo $list . " ";
+        echo $list->getFirst() . " ";
         echo $list->getLast();
     ?>
 </body>
