@@ -23,12 +23,12 @@
             }
 
             public function __toString() {
-                return "{$this->name}, {$this->gender}, {$this->age}";
+                return "$this->name, $this->gender, $this->age";
             }
 
             public function __invoke() {
                 $powers = implode(", ", $this->pover);
-                return " <br> {$this->alias}, {$powers}";
+                return " <br> $this->alias, $powers";
             }
          }
 

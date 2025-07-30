@@ -33,31 +33,32 @@
             }
 
             public function daily_meal(array $products) {
-                echo "<br>Day" . self::$day . ":<br>";
+                echo "\nDay" . self::$day . ":\n";
 
                 if ($this->diet) {
-                    $this->get_from_fridge($products[0], "Single Meal");
+                    $this->getFromFridge($products[rand(0, 2)], "Single Meal");
                     self::$day++;
                 } else {
                     if (count($products) >= 3) {
-                        $this->get_from_fridge($products[0], "Breakfast");
-                        $this->get_from_fridge($products[1], "Lunch");
-                        $this->get_from_fridge($products[2], "Dinner");
+                        $this->getFromFridge($products[0], "Breakfast");
+                        $this->getFromFridge($products[1], "Lunch");
+                        $this->getFromFridge($products[2], "Dinner");
                         self::$day++;
                     } else {
-                        echo "Need at least 3 products for normal mode<br>";
+                        echo "Need at least 3 products for normal mode\n";
                     }
                 }
             }
 
-            public function get_from_fridge(Product $product, $mealType) {
+            public function getFromFridge(Product $product, $mealType) {
                 try {
                     if ($product->kcal > 200) {
                         throw new FEatException();
                     }
-                    echo "$mealType: {$product->name} ({$product->kcal} kcal)<br>";
+                    echo "$mealType: {$product->name} ({$product->kcal} kcal)\n";
                 } catch (FEatException $e) {
-                    echo "$mealType: " . $e->getMessage() . "<br>";
+                    echo "$mealType: {$product->name} ({$product->kcal} kcal)\n";
+                    echo "$mealType: " . $e->getMessage() . "\n";
                 }
             }
         }
@@ -71,13 +72,13 @@
         $products = [$salad, $pasta, $popcorn];
 
 
-        echo "On Diet (1 meal per day):";
+        echo "On Diet (1 meal per day):" . "\n";
         $dietMode = new Ingestion(true);
-        $dietMode->daily_meal($products);
+        $dietMode->daily_meal($products) . "\n";
 
-        echo "Normal Mode (3 meals per day):";
+        echo "Normal Mode (3 meals per day):" . "\n";
         $normalMode = new Ingestion(false);
-        $normalMode->daily_meal($products);
+        $normalMode->daily_meal($products) . "\n";
     ?>
 </body>
 </html>

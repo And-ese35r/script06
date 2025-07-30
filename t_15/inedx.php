@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Time Calculation</title>
 </head>
 <body>
     <?php
         function canculate_time() {
             $oldDate = new DateTime('1939-01-01');
-            $newDate = new DateTime('2025-07-26');
+            $newDate = new DateTime('2025-09-30');
         
             $interval = $oldDate->diff($newDate);
         
@@ -17,41 +16,32 @@
             $month = $interval->m;
             $days = $interval->d;
         
-            echo $years . "<br>";
-            echo $month . "<br>";
-            echo $days . "<br>";
+            echo $years . "\n";
+            echo $month . "\n";
+            echo $days . "\n";
         
-            $allYears = $years * 12 * 30.02083;
-            $allMonth = $month * 30.02083;
-            echo round($allYears, 5) . "<br>";
-            echo round($allMonth, 5) . "<br>";
+            $allYears = $years * 12 * 30;
+            $allMonth = $month * 30;
+            echo $allYears . "\n";
+            echo $allMonth . "\n";
             $allData = $allYears + $allMonth + $days;
-            echo round($allData, 5) . "<br>";
+            echo $allData . "\n";
             $allData = $allData / 7;
-            echo round($allData, 10) . "<br>";
-        }
+            echo $allData . "\n";
+            echo $allDays = intval($allData);
+            $astraYears = intval($allDays / 360);
+            $remainingDays = $allDays % 360;
+            $astralMonth = intval($remainingDays / 30);
+            $astralDays = $remainingDays % 30;
+                    
+            echo "Общее количество дней: " . $allDays . "\n";
+            echo "Астральные годы: " . $astraYears . "\n";
+            echo "Астральные месяцы: " . $astralMonth . "\n";
+            echo "Астральные дни: " . $astralDays . "\n";
 
-        function calculate_modified_time() {
-            $startDate = new DateTime('1939-01-01');
-            $endDate = new DateTime();
-        
-            $interval = $startDate->diff($endDate);
-            $totalDays = $interval->days;
-            $dividedDays = $totalDays / 7;
-        
-            $years = (int)floor($dividedDays / 365);
-            $remainingAfterYears = fmod($dividedDays, 365);
-            $months = (int)floor($remainingAfterYears / 30.436875);
-            $days = (int)round(fmod($remainingAfterYears, 30.436875));
-        
-            echo "Modified time (1939-01-01 to today divided by 7):<br>";
-            echo "Years: $years<br>";
-            echo "Months: $months<br>";
-            echo "Days: $days<br>";
         }
 
         canculate_time();
-        calculate_modified_time();
     ?>
 </body>
 </html>
